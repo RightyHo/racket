@@ -64,11 +64,20 @@
           (column i)
           (grid (which-grid rowNum column)))
       (drop (cons square-list (square grid rowNum column move-set)) 1)))))
-    
+
+;; Splits up the possibility set matrix into rows to try and generate the new matrix of squares
+(define (new-rows poss-sets)
+  (let ((new-matrix empty))
+  (for ([i 9])
+      (let ((poss-row (list-ref poss-sets i)))
+        (drop (cons new-matrix (new-squares poss-row i)) 1)))))
+
 ;; takes a Sudoku puzzle in the above list of lists format, 
 ;; and replaces each integer with a set of integers, thus returning a list of sets of integers.  
 (define (transform unsolved)
-  (let ((poss-set (list-possible unsolved)))
-    (map new-squares poss-set)))
+  (let ((poss-sets (list-possible unsolved)))
+    (new-rows poss-sets)))
+    
+    
        
       
