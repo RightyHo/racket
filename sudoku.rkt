@@ -83,6 +83,17 @@
   (let ((poss-sets (list-possible unsolved)))
     (create-new-rows poss-sets)))
     
+(provide list-index
+         unsolved
+         possible
+         which-grid
+         square
+         make-set
+         list-possible
+         new-squares
+         create-new-rows
+         transform)
+         
     
        
       

@@ -4,8 +4,6 @@
          "sudoku.rkt")
 
 (require rackunit/text-ui)
- 
-(run-tests sudoku-tests)
 
 (define sudoku-tests
   (test-suite
@@ -35,4 +33,5 @@
         (lambda (elt)
           (check-pred list? elt))
       lst)))))
-
+ 
+(run-tests sudoku-tests)
