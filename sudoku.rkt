@@ -61,7 +61,7 @@
         (map make-set x)
         (printf "problem: ~a is not a list" x))))
    
-;; Takes a list of sets representing a single row on the matrix and returns a list of squares
+;; Takes a list of sets representing a single row of possible moves on the matrix and returns a list of squares
 (define (new-squares poss-moves rowNum)
   (let ((square-list empty))
   (for ([i 9])
@@ -83,6 +83,8 @@
   (let ((poss-sets (list-possible unsolved)))
     (create-new-rows poss-sets)))
     
+(transform unsolved)
+
 (provide list-index
          unsolved
          possible
