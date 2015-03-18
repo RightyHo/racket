@@ -45,9 +45,6 @@
              (and (>= c 6) (< c 9))) 9)
         (else 0)))
 
-;; The structure of each cell we will work with when trying to solve the puzzle
-(struct square (grid row col poss-list) #:transparent)
-
 ;; Helper function to choose what set to substitue for the intial value in the input list
 (define (make-set x)
   (if (eq? x 0)
@@ -79,10 +76,81 @@
 
 ;; takes a Sudoku puzzle in the above list of lists format, 
 ;; and replaces each integer with a set of integers, thus returning a list of sets of integers.  
-(define (transform unsolved)
-  (list-possible unsolved))
+(define (transform matrix)
+  (list-possible matrix))
     
-(transform unsolved)
+(define poss-matrix (transform unsolved))
+
+(define test-row (sixth poss-matrix))
+
+;; returns true if the cell is a singleton
+(define (is-singleton matrix row column)
+  (if (= (set-count (car (extract matrix row column 1))) 1)
+      #t
+      #f))
+
+;; returns the co-ordinates of the next singleton in the matrix moving to the right and down from the initial cell
+(define (get-singletons matrix)
+  (let ((singles '()))
+  (for ([i 9])
+    (display i)
+    (when (is-singleton matrix 0 i)
+        (append singles (square (which-grid 0 i) 0 i (list-ref (matrix) i)))))))
+        
+        
+
+;; The structure of each cell we will work with when trying to solve the puzzle
+(struct square (grid row col value) #:transparent)  
+
+;(define (solve matrix)
+ ; find-singleton)
+  
+;; finds all instances of x in the list and replaces them with y
+(define (replace lst x y)
+ (cond
+   [(empty? lst) lst]
+   [(list? (first lst)) (cons (replace (first lst) x y) (replace (rest lst) x y))]
+   [(equal? (first lst) x) (cons y (replace (rest lst) x y))]
+   [else (cons (first lst) (replace (rest lst) x y))]))
+
+;; extracts a sub-list from a matrix beginning at the cell with co-ordinates (row,column)
+;; and comprised of the "sublist-size" adjacent cells to the right of the first cell.  Sub-list
+;; elements cannot span more than one row, e.g. (end of row - first cell >= sublist-size) 
+(define (extract matrix row column sublist-size)
+ (take (drop (car (take (drop matrix row)1))column)sublist-size))
+
+;; calls the replace method with the search key and replace values listed on the
+;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
+(define (manipulate matrix row column sublist-size)
+ (let* ((initial-value (extract matrix row column sublist-size))
+       (possible-value (make-set initial-value)))
+   (replace (extract matrix row column sublist-size) (car initial-value) possible-value)))
+
+
+;; where row and column parameters indicate the first cell to transform and
+;; sublist-size indicates the number of adjacent cells you want to transform
+;; the matrix rows and columns are numbered 0 to 8
+(define (trans matrix row column sublist-size)
+ (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+   (append inner 
+         (append 
+          (list
+          (flatten
+           (list
+            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
+            (manipulate matrix row column sublist-size) ; manipulate the values of the selected sublist
+            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
+          (drop matrix (+ row 1))))))
+
+
+
+
+
+
+
+
+
 
 (provide list-index
          unsolved
