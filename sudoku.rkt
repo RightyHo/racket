@@ -80,8 +80,7 @@
 ;; takes a Sudoku puzzle in the above list of lists format, 
 ;; and replaces each integer with a set of integers, thus returning a list of sets of integers.  
 (define (transform unsolved)
-  (let ((poss-sets (list-possible unsolved)))
-    (create-new-rows poss-sets)))
+  (list-possible unsolved))
     
 (transform unsolved)
 
