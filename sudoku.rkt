@@ -1,6 +1,6 @@
 #lang racket
 
-;; Helper function to find out the index number of an element in a list - decided not to use yet but may use later?
+;; Helper function to find out the index number of an element in a list 
 (define (list-index list element)
   (let loop ((any-list list)
              (index 0))
@@ -82,28 +82,9 @@
 (define poss-matrix (transform unsolved))
 
 (define test-row (sixth poss-matrix))
-
-;; returns true if the cell is a singleton
-(define (is-singleton matrix row column)
-  (if (= (set-count (car (extract matrix row column 1))) 1)
-      #t
-      #f))
-
-;; returns the co-ordinates of the next singleton in the matrix moving to the right and down from the initial cell
-(define (get-singletons matrix)
-  (let ((singles '()))
-  (for ([i 9])
-    (display i)
-    (when (is-singleton matrix 0 i)
-        (append singles (square (which-grid 0 i) 0 i (list-ref (matrix) i)))))))
         
-        
-
 ;; The structure of each cell we will work with when trying to solve the puzzle
 (struct square (grid row col value) #:transparent)  
-
-;(define (solve matrix)
- ; find-singleton)
   
 ;; finds all instances of x in the list and replaces them with y
 (define (replace lst x y)
@@ -143,11 +124,33 @@
             (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
           (drop matrix (+ row 1))))))
 
+;; returns a row in the matrix
+(define (get-row matrix row)
+  (extract matrix row 0 9))
 
+;; returns a column in the matrix
+(define (get-column matrix col)
+  (append (extract matrix 0 col 1)
+          (extract matrix 1 col 1)
+          (extract matrix 2 col 1)
+          (extract matrix 3 col 1)
+          (extract matrix 4 col 1)
+          (extract matrix 5 col 1)
+          (extract matrix 6 col 1)
+          (extract matrix 7 col 1)
+          (extract matrix 8 col 1)))
 
+;; returns true if the cell is a singleton
+(define (is-singleton matrix row column)
+  (if (= (set-count (car (take (drop matrix 0) 1))) 1)
+      #t
+      #f))
 
-
-
+;; returns singleton elements in a list
+(define (singleton-list lst)
+  (filter (if (= (set-count (car (take (drop matrix 0) 1))) 1)
+      #t
+      #f))
 
 
 
