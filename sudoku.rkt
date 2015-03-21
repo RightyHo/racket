@@ -1,13 +1,5 @@
 #lang racket
 
-;; Helper function to find out the index number of an element in a list 
-(define (list-index list element)
-  (let loop ((any-list list)
-             (index 0))
-    (cond ((empty? any-list) #f)
-          ((equal? (first any-list) element) index)
-          (else (loop (rest any-list) (add1 index))))))
-
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
   '((0 2 5 0 0 1 0 0 0)
@@ -140,20 +132,49 @@
           (extract matrix 7 col 1)
           (extract matrix 8 col 1)))
 
-;; returns true if the cell is a singleton
+;; returns true if the cell co-ordinates are for a singleton set
 (define (is-singleton matrix row column)
   (if (= (set-count (car (take (drop matrix 0) 1))) 1)
       #t
       #f))
 
-;; returns singleton elements in a list
-(define (singleton-list lst)
-  (filter (if (= (set-count (car (take (drop matrix 0) 1))) 1)
+;; returns true if set is a singleton
+(define (singleton cell)
+  (if (= (set-count cell) 1)
       #t
       #f))
 
 
+;; returns singleton elements in a list
+(define (singleton-list lst)
+  (filter (lambda (x) (eq? (set-count x) 1)) lst))
 
+;; returns the value of a singleton set
+(define (singleton-value cell)
+  (set-first cell))
+
+;; Helper function to find out the index number of an element in a list 
+(define (list-index list element)
+  (let loop ((any-list list)
+             (index 0))
+    (cond ((empty? any-list) #f)
+          ((equal? (first any-list) element) index)
+          (else (loop (rest any-list) (add1 index))))))
+
+;; Find a location containing a singleton set (a set containing just one number).
+;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
+(define (singleton-search matrix)
+  (for/list ([i (in-naturals 1)]
+             [matrix])
+    (let* ((row-options (get-row matrix i))
+          (singletons-present (singleton-list row-options)))
+      
+;; 
+(define 
+      (for/list ([j (in-naturals 1)]
+                 [singletons-present])
+        (let* ((val (singleton-valuecol-index (list-index row-options
+                  
 
 (provide list-index
          unsolved
