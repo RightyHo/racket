@@ -165,22 +165,37 @@
 ;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
 (define (remove-singleton-val matrix row column sublist-size init-val single)
   (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
-      
+ 
+;; calls the replace method with the search key and replaces the value in the list
+(define (remove-from-list list init-val singleton)
+  (replace list init-val (set-remove init-val singleton)))
+
 ;; takes list of sets and reduces all sets by a particular value
-(define (reduce-choices matrix list row col acc-list single)
+(define (rec-reduce-choices list acc-list single)
   (cond
     [(empty? list) acc-list]
-    [(set=? (car list) (seteq single)) (reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list (car list)) single)]
-    [else (reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list 
-                                                          (remove-singleton-val matrix row col 1 
-                                                                                (car list) single)) single)]))
+    [(set=? (car list) (seteq single)) (rec-reduce-choices (drop list 1) (append acc-list (cons (car list) '())) single)]
+    [else (rec-reduce-choices (drop list 1) (append acc-list (remove-from-list list (car list) single)) single)]))
 
+;; takes list of sets and reduces all sets by a particular value
+;(define (rec-reduce-choices matrix list row col acc-list single)
+;  (cond
+;    [(empty? list) acc-list]
+;    [(set=? (car list) (seteq single)) (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list (cons (car list) '())) single)]
+;    [else (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list 
+;                                                          (remove-singleton-val matrix row col 1 (car list) single)) single)]))
+
+;; function to reduce row choices by removing a singleton from the row by calling rec-reduce-choices function
+(define (reduce-row-choices matrix row single)
+  (rec-reduce-choices (get-row matrix row) '() single))
   
-  
+;; function to reduce column choices by removing a singleton from the row by calling rec-reduce-choices function
+(define (reduce-column-choices matrix col single)
+  (rec-reduce-choices (get-column matrix col) '() single))
 
 (define last-row (ninth poss-matrix))
-(define reduced-last-3 (reduce-choices poss-matrix last-row 8 0 '() 3))
-(define reduced-last-6 (reduce-choices poss-matrix last-row 8 0 '() 6))
+(define reduced-row-3 (reduce-row-choices poss-matrix 8 3))
+(define reduced-row-6 (reduce-row-choices poss-matrix 8 6))
 
                   
 
