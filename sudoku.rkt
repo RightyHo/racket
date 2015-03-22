@@ -23,6 +23,14 @@
 ;      #t
 ;      #f))
 
+;; takes list of sets and reduces all sets by a particular value
+;(define (rec-reduce-choices matrix list row col acc-list single)
+;  (cond
+;    [(empty? list) acc-list]
+;    [(set=? (car list) (seteq single)) (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list (cons (car list) '())) single)]
+;    [else (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list 
+;                                                          (remove-singleton-val matrix row col 1 (car list) single)) single)]))
+
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
   '((0 2 5 0 0 1 0 0 0)
@@ -102,7 +110,7 @@
 ;; where row and column parameters indicate the first cell to transform and
 ;; sublist-size indicates the number of adjacent cells you want to transform
 ;; the matrix rows and columns are numbered 0 to 8
-(define (trans matrix row column sublist-size)
+(define (amend-set matrix row column sublist-size singleton)
  (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
        [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
    (append inner 
@@ -111,9 +119,14 @@
           (flatten
            (list
             (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
-            (remove-singleton-val matrix row column sublist-size) ; manipulate the values of the selected sublist
+            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
             (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
           (drop matrix (+ row 1))))))
+
+;; calls the replace method with the search key and replace values listed on the
+;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
+(define (remove-singleton-val matrix row column sublist-size init-val single)
+  (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
 
 ;; returns a row in the matrix
 (define (get-row matrix row)
@@ -131,6 +144,37 @@
           (extract matrix 7 col 1)
           (extract matrix 8 col 1)))
 
+;; returns a list of all 9 cells in one of the grids on board.  Cells are listed in order from top left to bottom right.
+(define (grid-cell-list matrix grid-num)
+  (cond [(= grid-num 1) (append (extract matrix 0 0 3)
+                               (extract matrix 1 0 3)
+                               (extract matrix 2 0 3))]
+        [(= grid-num 2) (append (extract matrix 0 3 3)
+                               (extract matrix 1 3 3)
+                               (extract matrix 2 3 3))]
+        [(= grid-num 3) (append (extract matrix 0 6 3)
+                               (extract matrix 1 6 3)
+                               (extract matrix 2 6 3))]
+        [(= grid-num 4) (append (extract matrix 3 0 3)
+                               (extract matrix 4 0 3)
+                               (extract matrix 5 0 3))]
+        [(= grid-num 5) (append (extract matrix 3 3 3)
+                               (extract matrix 4 3 3)
+                               (extract matrix 5 3 3))]
+        [(= grid-num 6) (append (extract matrix 3 6 3)
+                               (extract matrix 4 6 3)
+                               (extract matrix 5 6 3))]
+        [(= grid-num 7) (append (extract matrix 6 0 3)
+                               (extract matrix 7 0 3)
+                               (extract matrix 8 0 3))]
+        [(= grid-num 8) (append (extract matrix 6 3 3)
+                               (extract matrix 7 3 3)
+                               (extract matrix 8 3 3))]
+        [(= grid-num 9) (append (extract matrix 6 6 3)
+                               (extract matrix 7 6 3)
+                               (extract matrix 8 6 3))]
+        [else '()]))
+         
 ;; returns true if set is a singleton
 (define (singleton cell)
   (if (= (set-count cell) 1)
@@ -152,23 +196,10 @@
     (cond ((empty? any-list) #f)
           ((equal? (first any-list) element) index)
           (else (loop (rest any-list) (add1 index))))))
-
-;; Find a location containing a singleton set (a set containing just one number).
-;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
-;(define (singleton-search matrix)
-;  (for/list ([i (in-naturals 1)]
-;             [matrix])
-;    (let* ((row-options (get-row matrix i))
-;          (singletons-present (singleton-list row-options))))))
-
-;; calls the replace method with the search key and replace values listed on the
-;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
-(define (remove-singleton-val matrix row column sublist-size init-val single)
-  (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
  
 ;; calls the replace method with the search key and replaces the value in the list
 (define (remove-from-list list init-val singleton)
-  (replace list init-val (set-remove init-val singleton)))
+  (replace (cons (car list) '()) init-val (set-remove init-val singleton)))
 
 ;; takes list of sets and reduces all sets by a particular value
 (define (rec-reduce-choices list acc-list single)
@@ -177,36 +208,68 @@
     [(set=? (car list) (seteq single)) (rec-reduce-choices (drop list 1) (append acc-list (cons (car list) '())) single)]
     [else (rec-reduce-choices (drop list 1) (append acc-list (remove-from-list list (car list) single)) single)]))
 
-;; takes list of sets and reduces all sets by a particular value
-;(define (rec-reduce-choices matrix list row col acc-list single)
-;  (cond
-;    [(empty? list) acc-list]
-;    [(set=? (car list) (seteq single)) (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list (cons (car list) '())) single)]
-;    [else (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list 
-;                                                          (remove-singleton-val matrix row col 1 (car list) single)) single)]))
-
 ;; function to reduce row choices by removing a singleton from the row by calling rec-reduce-choices function
 (define (reduce-row-choices matrix row single)
   (rec-reduce-choices (get-row matrix row) '() single))
   
-;; function to reduce column choices by removing a singleton from the row by calling rec-reduce-choices function
+;; function to reduce column choices by removing a singleton from the column by calling rec-reduce-choices function
 (define (reduce-column-choices matrix col single)
   (rec-reduce-choices (get-column matrix col) '() single))
+
+;; function to reduce grid choices by removing a singleton from the grid by calling rec-reduce-choices function
+(define (reduce-grid-choices matrix grid-num single)
+  (rec-reduce-choices (grid-cell-list matrix grid-num) '() single))
+
+
+;; Find a location containing a singleton set (a set containing just one number).
+;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
+;(define (singleton-search matrix)
+;  ())
+
+;(define rec-row-search )
+
+;; amends a row in the matrix by removing a specified singleton from every set in a specified row
+(define (amend-row matrix row singleton)
+ (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+   (append inner 
+         (append 
+          (list (reduce-row-choices matrix row singleton))      
+          (drop matrix (+ row 1))))))
+
+;; amends a column in the matrix by removing a specified singleton from every set in a specified column
+(define (amend-column matrix row column sublist-size singleton)
+ (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+   (append inner 
+         (append 
+          (list
+          (flatten
+           (list
+            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
+            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
+            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
+          (drop matrix (+ row 1))))))
+
+
 
 (define last-row (ninth poss-matrix))
 (define reduced-row-3 (reduce-row-choices poss-matrix 8 3))
 (define reduced-row-6 (reduce-row-choices poss-matrix 8 6))
-
+(define third-column (get-column poss-matrix 2))
+(define reduced-col-3 (reduce-column-choices poss-matrix 2 3))
+(define reduced-col-7 (reduce-column-choices poss-matrix 2 7))
+(define fourth-grid (grid-cell-list poss-matrix 4))
+(define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
+(define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
                   
 
 (provide list-index
          unsolved
-         possible
          which-grid
-         square
          make-set
          list-possible
-         transform)
+         remove-singleton-val)
          
     
        
