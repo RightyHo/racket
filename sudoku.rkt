@@ -230,26 +230,34 @@
 
 ;; amends a row in the matrix by removing a specified singleton from every set in a specified row
 (define (amend-row matrix row singleton)
- (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+ (let ([top-rows (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
        [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
-   (append inner 
+   (append top-rows 
          (append 
           (list (reduce-row-choices matrix row singleton))      
           (drop matrix (+ row 1))))))
 
 ;; amends a column in the matrix by removing a specified singleton from every set in a specified column
-(define (amend-column matrix row column sublist-size singleton)
- (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
-       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
-   (append inner 
-         (append 
-          (list
-          (flatten
-           (list
-            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
-            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
-            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
-          (drop matrix (+ row 1))))))
+(define (amend-column matrix column singleton)
+  (let ([replacement-col (reduce-column-choices matrix column singleton)])
+    (insert-list replacement-col 0 column matrix)))
+
+    
+(define (insert-list replacement-list row col matrix)     
+  (if (empty? replacement-list) 
+      '()
+      (insert-list (drop replacement-list 1) (+ row 1) col (let ([top-rows (take matrix row)]
+                                                                 [remainder (drop matrix row)]) 
+                                                             (append top-rows 
+                                                                     (list
+                                                                      (flatten
+                                                                       (list
+                                                                        (take (first (take remainder 1)) col)  ; select the columns before the column (to remain unchanged) on the row to be manipulated
+                                                                        (car replacement-list) ; replace the value in the matrix column with the list value
+                                                                        (drop (first (take remainder 1)) (+ col 1))))) ; select the remaining columns on the manipulated row after the inserted column value (to remain unchanged)            
+                                                                     (drop matrix (+ row 1)))))))
+      
+ 
 
 
 
