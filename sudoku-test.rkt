@@ -64,10 +64,22 @@
       (check-equal? output '(0 0 3))))
    
    ;; get-row test
+   (test-case
+    "test the row returned by get-row is the expected outcome"
+    (let ([output (get-row unsolved 3)])
+      (check-equal? output '(0 5 0 0 0 0 3 2 0))))
    
    ;; get-column test
+   (test-case
+    "test the column returned by get-column is the expected outcome"
+    (let ([output (get-column unsolved 3)])
+      (check-equal? output '(0 2 0 0 0 0 5 0 6))))
    
    ;; grid-cell-list test
+   (test-case
+    "test the grid list returned grid-cell-list contains the expected elements"
+    (let ([output (grid-cell-list unsolved 4)])
+      (check-equal? output '(0 5 0 6 0 0 0 8 7))))
    
    ;; singleton test
    
