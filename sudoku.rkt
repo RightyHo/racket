@@ -272,13 +272,35 @@
 (define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
                   
 
-(provide list-index
-         unsolved
+(provide unsolved
+         square
+         possible
          which-grid
          make-set
          list-possible
-         remove-singleton-val)
-         
+         transform
+         poss-matrix
+         test-row 
+         replace
+         extract
+         amend-set
+         remove-singleton-val
+         get-row
+         get-column
+         grid-cell-list
+         singleton
+         singleton-list
+         singleton-value
+         list-index
+         remove-from-list
+         rec-reduce-choices
+         reduce-row-choices
+         reduce-column-choices
+         reduce-grid-choices
+         amend-row
+         amend-column
+         insert-list)
+
     
        
       
