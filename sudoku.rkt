@@ -110,23 +110,23 @@
 ;; where row and column parameters indicate the first cell to transform and
 ;; sublist-size indicates the number of adjacent cells you want to transform
 ;; the matrix rows and columns are numbered 0 to 8
-(define (amend-set matrix row column sublist-size singleton)
- (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
-       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
-   (append inner 
-         (append 
-          (list
-          (flatten
-           (list
-            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
-            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
-            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
-          (drop matrix (+ row 1))))))
+; (define (amend-set matrix row column sublist-size singleton)
+;  (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+;       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+;   (append inner 
+;         (append 
+;          (list
+;          (flatten
+;           (list
+;            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
+;            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
+;            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
+;          (drop matrix (+ row 1))))))
 
 ;; calls the replace method with the search key and replace values listed on the
 ;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
-(define (remove-singleton-val matrix row column sublist-size init-val single)
-  (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
+; (define (remove-singleton-val matrix row column sublist-size init-val single)
+;   (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
 
 ;; returns a row in the matrix
 (define (get-row matrix row)
@@ -283,8 +283,8 @@
          test-row 
          replace
          extract
-         amend-set
-         remove-singleton-val
+         ;; amend-set
+         ;; remove-singleton-val
          get-row
          get-column
          grid-cell-list

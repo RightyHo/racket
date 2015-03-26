@@ -47,38 +47,21 @@
    (test-case
     "Test that tranform function returns correct output"
     (let ([output (transform unsolved)])
-      (check = (car (car output)) (seteq 1 2 3 4 5 6 7 8 9))
+      (check-equal? (car (car output)) (seteq 1 2 3 4 5 6 7 8 9))
       (check-equal? (second (car poss-matrix)) (seteq 2))
       (check-equal? (car (second poss-matrix)) (seteq 1))))
    
-   ;; poss-matrix test
-   
-   ;; test-row test
-   
    ;; replace test
-   
+   (test-case
+    "check that repace function performs as expected"
+    (let ([output (replace '(3 5 6 7 4 5) 5 000)])
+      (check-equal? output '(3 000 6 7 4 000))))
+
    ;; extract test
-   
-   ;; amend-set test
-   
-   ;; remove-singleton-val test
-   ;   (test-case
-   ;    "Test that the output from function remove-singleton-val is correct"
-   ;    (let* ([mtx unsolved]
-   ;          (outputlist (remove-singleton-val mtx row column sublist-size init-val single)))
-   ;      (check = (length lst) 9)
-   ;      (check = (length (first lst)) 9)
-   ;      (check = (length outputlist) 9)
-   ;      (check = (length (first outputlist)) 9)
-   ;      (check-equal? (first (first outputlist)) (seteq 1 2 3 4 5 6 7 8 9))
-   ;      (check-equal? (first (second outputlist)) (seteq 1))
-   ;      (check-equal? (sixth (third outputlist)) (seteq 4))
-   ;      (check-equal? (fourth (fourth outputlist)) (seteq 1 2 3 4 5 6 7 8 9))
-   ;      (check-equal? (fifth (fifth outputlist)) (seteq 2))
-   ;      (check-equal? (eighth (sixth outputlist)) (seteq 6))))      
-   
-   ;   (check-equal? (list-index '(1 2 3 4 5 6) 5) 4 "Find index of element in list")
-   
+   (test-case
+    "test that the extract function returns expected output"
+    (let ([output (extract unsolved 3 4 3)])
+      (check-equal? output '(0 0 3))))
    
    ;; get-row test
    
@@ -93,7 +76,8 @@
    ;; singleton-value test
    
    ;; list-index test
-   
+      (check-equal? (list-index '(1 2 3 4 5 6) 5) 4 "Find index of element in list")
+      
    ;; remove-from-list test
    
    ;; rec-reduce-choices test
