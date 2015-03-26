@@ -31,7 +31,7 @@
    (test-case
     "Test that the output from function list-possible is correct"
     (let* ([lst unsolved]
-           (outputlist (list-possible lst)))
+           [outputlist (list-possible lst)])
       (check = (length lst) 9)
       (check = (length (first lst)) 9)
       (check = (length outputlist) 9)
@@ -44,6 +44,12 @@
       (check-equal? (eighth (sixth outputlist)) (seteq 6))))      
       
    ;; transform test
+   (test-case
+    "Test that tranform function returns correct output"
+    (let ([output (transform unsolved)])
+      (check = (car (car output)) (seteq 1 2 3 4 5 6 7 8 9))
+      (check-equal? (second (car poss-matrix)) (seteq 2))
+      (check-equal? (car (second poss-matrix)) (seteq 1))))
    
    ;; poss-matrix test
    
