@@ -223,7 +223,7 @@
   (let ([replacement-col (reduce-column-choices matrix column singleton)])
     (insert-list replacement-col 0 column matrix)))
 
-    
+;;     
 (define (insert-list replacement-list row col matrix)     
   (if (empty? replacement-list) 
       '()

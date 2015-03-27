@@ -259,6 +259,19 @@
                              (seteq 1 2 3 4 5 6 7 8 9))))))
    
    ;; amend-column test
+   (test-case
+    "test the amend-column function and confirm the output meets expectation"
+    (let ([output (amend-column poss-matrix 2 6)])
+      (check-equal? output (list
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 1 2 3 4 5 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 9))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 8) (seteq 7) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
+                            (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
    
    ;; insert-list test
    
