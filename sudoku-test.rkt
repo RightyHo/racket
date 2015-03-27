@@ -273,7 +273,7 @@
                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
    
-   ;; insert-list test
+
    
    
    
