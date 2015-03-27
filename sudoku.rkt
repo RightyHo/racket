@@ -30,24 +30,9 @@
 ;    [(set=? (car list) (seteq single)) (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list (cons (car list) '())) single)]
 ;    [else (rec-reduce-choices matrix (drop list 1) row (+ col 1) (append acc-list 
 ;                                                          (remove-singleton-val matrix row col 1 (car list) single)) single)]))
-
-;; Example input list describing an initialised Sudoku board
-(define unsolved
-  '((0 2 5 0 0 1 0 0 0)
-    (1 0 4 2 5 0 0 0 0)
-    (0 0 6 0 0 4 2 1 0)
-    (0 5 0 0 0 0 3 2 0)
-    (6 0 0 0 2 0 0 0 9)
-    (0 8 7 0 0 0 0 6 0)
-    (0 9 1 5 0 0 6 0 0)
-    (0 0 0 0 7 8 1 0 3)
-    (0 0 0 6 0 0 5 9 0)))
-        
+    
 ;; The structure of each cell we will work with when trying to solve the puzzle
 (struct square (grid row col value) #:transparent)  
-
-;; Set of all possible values
-(define possible (seteq 1 2 3 4 5 6 7 8 9))
 
 ;; Sets grid ID for the 9 3X3 grids on the matrix
 (define (which-grid r c)
@@ -88,10 +73,6 @@
 ;; and replaces each integer with a set of integers, thus returning a list of sets of integers.  
 (define (transform matrix)
   (list-possible matrix))
-    
-(define poss-matrix (transform unsolved))
-
-(define test-row (sixth poss-matrix))
 
 ;; finds all instances of x in the list and replaces them with y
 (define (replace lst x y)
@@ -256,31 +237,64 @@
                                                                         (car replacement-list) ; replace the value in the matrix column with the list value
                                                                         (drop (first (take remainder 1)) (+ col 1))))) ; select the remaining columns on the manipulated row after the inserted column value (to remain unchanged)            
                                                                      (drop matrix (+ row 1)))))))
-      
- 
 
+;; Example input list describing an initialised Sudoku board
+(define unsolved
+  '((0 2 5 0 0 1 0 0 0)
+    (1 0 4 2 5 0 0 0 0)
+    (0 0 6 0 0 4 2 1 0)
+    (0 5 0 0 0 0 3 2 0)
+    (6 0 0 0 2 0 0 0 9)
+    (0 8 7 0 0 0 0 6 0)
+    (0 9 1 5 0 0 6 0 0)
+    (0 0 0 0 7 8 1 0 3)
+    (0 0 0 6 0 0 5 9 0)))
 
+;; Set of all possible values
+(define possible (seteq 1 2 3 4 5 6 7 8 9))
+    
+;; pre-defined rows, columns, matrices and grids for use in testing
+    
+(define poss-matrix (transform unsolved))
 
+(define first-row (first poss-matrix))
+(define third-row (third poss-matrix))
+(define test-row (sixth poss-matrix))
 (define last-row (ninth poss-matrix))
 (define reduced-row-3 (reduce-row-choices poss-matrix 8 3))
 (define reduced-row-6 (reduce-row-choices poss-matrix 8 6))
+
+(define sixth-column (get-column poss-matrix 5))
+(define ninth-column (get-column poss-matrix 8))
 (define third-column (get-column poss-matrix 2))
 (define reduced-col-3 (reduce-column-choices poss-matrix 2 3))
 (define reduced-col-7 (reduce-column-choices poss-matrix 2 7))
+
+(define first-grid (grid-cell-list poss-matrix 1))
+(define ninth-grid (grid-cell-list poss-matrix 9))
 (define fourth-grid (grid-cell-list poss-matrix 4))
 (define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
 (define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
                   
 
 (provide unsolved
-         square
          possible
+         poss-matrix
+         first-row
+         third-row
+         test-row 
+         last-row
+         sixth-column
+         ninth-column
+         third-column
+         first-grid
+         ninth-grid
+         fourth-grid
+         square
          which-grid
          make-set
          list-possible
          transform
-         poss-matrix
-         test-row 
          replace
          extract
          ;; amend-set

@@ -82,25 +82,181 @@
       (check-equal? output '(0 5 0 6 0 0 0 8 7))))
    
    ;; singleton test
+   (check-equal? (singleton (seteq 7)) #t)
+   (check-equal? (singleton (seteq 7 8 9)) #f)
    
    ;; singleton-list test 
-   
+   (test-case
+    "test the singleton-list function returns a list contains containing only the singleton elements from the input list"
+    (let ([output (singleton-list (sixth poss-matrix))])
+      (check-equal? output (list (seteq 8) (seteq 7) (seteq 6)))))
+      
    ;; singleton-value test
+   (check = (singleton-value (seteq 8)) 8)
    
    ;; list-index test
-      (check-equal? (list-index '(1 2 3 4 5 6) 5) 4 "Find index of element in list")
+   (check-equal? (list-index '(1 2 3 4 5 6) 5) 4 "Find index of element in list")
       
    ;; remove-from-list test
+   (test-case
+    "check that output from remove-from-list function meets expectation"
+    (let ([output (remove-from-list (sixth poss-matrix) (seteq 1 2 3 4 5 6 7 8 9) 8)])
+      (check-equal? output (list (seteq 1 2 3 4 5 6 7 9)))))
    
    ;; rec-reduce-choices test
+   (test-case
+    "test the rec-reduce-choices function and confirm the output meets expectation"
+    (let ([output (rec-reduce-choices test-row '() 7)])
+      (check-equal? output (list
+                            (seteq 1 2 3 4 5 6 8 9)
+                            (seteq 8)
+                            (seteq 7)
+                            (seteq 1 2 3 4 5 6 8 9)
+                            (seteq 1 2 3 4 5 6 8 9)
+                            (seteq 1 2 3 4 5 6 8 9)
+                            (seteq 1 2 3 4 5 6 8 9)
+                            (seteq 6)
+                            (seteq 1 2 3 4 5 6 8 9)))))
    
    ;; reduce-row-choices test
-   
+   (test-case
+    "test the reduce-row-choices function and confirm the output meets expectation"
+    (let ([output (reduce-row-choices poss-matrix 8 5)])
+      (check-equal? output (list
+                            (seteq 1 2 3 4 6 7 8 9)
+                            (seteq 1 2 3 4 6 7 8 9)
+                            (seteq 1 2 3 4 6 7 8 9)
+                            (seteq 6)
+                            (seteq 1 2 3 4 6 7 8 9)
+                            (seteq 1 2 3 4 6 7 8 9)
+                            (seteq 5)
+                            (seteq 9)
+                            (seteq 1 2 3 4 6 7 8 9)))))
+                    
    ;; reduce-column-choices test
-   
+   (test-case
+    "test the reduce-column-choices function and confirm the output meets expectation"
+    (let ([output (reduce-column-choices poss-matrix 2 1)])
+      (check-equal? output (list 
+                            (seteq 5) 
+                            (seteq 4) 
+                            (seteq 6) 
+                            (seteq 2 3 4 5 6 7 8 9) 
+                            (seteq 2 3 4 5 6 7 8 9) 
+                            (seteq 7)
+                            (seteq 1) 
+                            (seteq 2 3 4 5 6 7 8 9) 
+                            (seteq 2 3 4 5 6 7 8 9)))))
+      
    ;; reduce-grid-choices test
-   
+   (test-case
+    "test the reduce-grid-choices function and confirm the output meets expectation"
+    (let ([output (reduce-grid-choices poss-matrix 4 8)])
+      (check-equal? output (list
+                            (seteq 1 2 3 4 5 6 7 9)
+                            (seteq 5)
+                            (seteq 1 2 3 4 5 6 7 9)
+                            (seteq 6)
+                            (seteq 1 2 3 4 5 6 7 9)
+                            (seteq 1 2 3 4 5 6 7 9)
+                            (seteq 1 2 3 4 5 6 7 9)
+                            (seteq 8)
+                            (seteq 7)))))
    ;; amend-row test
+   (test-case
+    "test the amend-row function and confirm the output meets expectation"
+    (let ([output (amend-row poss-matrix 3 3)])
+      (check-equal? output (list
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 2)
+                             (seteq 5)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9))
+                            (list
+                             (seteq 1)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 4)
+                             (seteq 2)
+                             (seteq 5)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9))
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 6)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 4)
+                             (seteq 2)
+                             (seteq 1)
+                             (seteq 1 2 3 4 5 6 7 8 9))
+                            (list
+                             (seteq 1 2 4 5 6 7 8 9)
+                             (seteq 5)
+                             (seteq 1 2 4 5 6 7 8 9)
+                             (seteq 1 2 4 5 6 7 8 9)
+                             (seteq 1 2 4 5 6 7 8 9)
+                             (seteq 1 2 4 5 6 7 8 9)
+                             (seteq 3)
+                             (seteq 2)
+                             (seteq 1 2 4 5 6 7 8 9))
+                            (list
+                             (seteq 6)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 2)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 9))
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 8)
+                             (seteq 7)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 6)
+                             (seteq 1 2 3 4 5 6 7 8 9))
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 9)
+                             (seteq 1)
+                             (seteq 5)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 6)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9))
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 7)
+                             (seteq 8)
+                             (seteq 1)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 3))
+                            (list
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 6)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 1 2 3 4 5 6 7 8 9)
+                             (seteq 5)
+                             (seteq 9)
+                             (seteq 1 2 3 4 5 6 7 8 9))))))
    
    ;; amend-column test
    
