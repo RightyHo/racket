@@ -141,12 +141,12 @@
 
 ;; Helper function to find out the index number of an element in a list 
 (define (list-index list element)
-  (let loop ((any-list list)
+  (let loop ((my-list list)
              (index 0))
-    (cond ((empty? any-list) #f)
-          ((equal? (first any-list) element) index)
-          (else (loop (rest any-list) (add1 index))))))
- 
+    (cond ((empty? my-list) #f)
+          ((equal? (first my-list) element) index)
+          (else (loop (rest my-list) (add1 index))))))
+
 ;; calls the replace method with the search key and replaces the value in the list
 (define (remove-from-list list init-val singleton)
   (replace (cons (car list) '()) init-val (set-remove init-val singleton)))
@@ -265,12 +265,21 @@
                                 (drop (get-row matrix (+ 2 (top-grid-row grid))) (+ 3 (left-grid-col grid))))))))
              remainder))))
 
+;; remove singleton from all cells in the same row, column and grid as the given cell
+(define (remove-singleton matrix cell row col)
+  (let ([singleton (singleton-value cell)])
+    (amend-row matrix row singleton)
+    (amend-column matrix col singleton)
+    (amend-grid matrix (which-grid row col) singleton)))
 
-
-
-;; Find a location containing a singleton set (a set containing just one number).
+;; Find a cell containing a singleton set (a set containing just one number) in a given row.
 ;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
-;(define (singleton-search matrix)
+(define (singleton-search-row matrix list row)
+  (let loop ([my-list list]
+             [index 0])
+    (cond [(empty? my-list) #f]
+          [(singleton (first my-list)) (remove-singleton matrix (first my-list) row index)]
+          [else (loop (rest my-list) (add1 index))])))
 
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
