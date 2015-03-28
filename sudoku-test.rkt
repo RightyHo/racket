@@ -342,9 +342,23 @@
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 3 4 5 6 7 8 9) (seteq 3))
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
-   
-   
-   
+      
+   ;; singleton-search test
+   (test-case
+    "test the singleton-search function and confirm that the output meets expectation"
+    (let ([output (singleton-search poss-matrix)])
+      (check-equal? output (list
+                            (list (seteq 3 7 8 9) (seteq 2) (seteq 5) (seteq 3 7 8 9) (seteq 3 6 8 9) (seteq 1) (seteq 4 7 8 9) (seteq 3 4 7 8) (seteq 4 6 7 8))
+                            (list (seteq 1) (seteq 3 7) (seteq 4) (seteq 2) (seteq 5) (seteq 3 6 7 9) (seteq 7 8 9) (seteq 3 7 8) (seteq 6 7 8))
+                            (list (seteq 3 7 8 9) (seteq 3 7) (seteq 6) (seteq 3 7 8 9) (seteq 3 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 5 7 8))
+                            
+                            (list (seteq 4 9) (seteq 5) (seteq 9) (seteq 1 4 7 8 9) (seteq 1 4 6 8 9) (seteq 6 7 9) (seteq 3) (seteq 2) (seteq 1 4 7 8))
+                            (list (seteq 6) (seteq 1 3 4) (seteq 3) (seteq 1 3 4 7 8) (seteq 2) (seteq 3 5 7) (seteq 4 7 8) (seteq 4 5 7 8) (seteq 9))
+                            (list (seteq 2 3 4 9) (seteq 8) (seteq 7) (seteq 1 3 4 9) (seteq 1 3 4 9) (seteq 3 5 9) (seteq 4) (seteq 6) (seteq 1 4 5))
+                            
+                            (list (seteq 2 3 4 7 8) (seteq 9) (seteq 1) (seteq 5) (seteq 3 4) (seteq 2 3) (seteq 6) (seteq 4 7 8) (seteq 2 4 7 8))
+                            (list (seteq 2 4 5) (seteq 4 6) (seteq 2) (seteq 4 9) (seteq 7) (seteq 8) (seteq 1) (seteq 4) (seteq 3))
+                            (list (seteq 2 3 4 7 8) (seteq 3 4 7) (seteq 2 3 8) (seteq 6) (seteq 1 3 4) (seteq 2 3) (seteq 5) (seteq 9) (seteq 2 4 7 8))))))
    
    
    

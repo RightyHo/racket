@@ -283,12 +283,23 @@
 ;; find a cell containing a singleton set (a set containing just one number) in a given matrix.
 ;; for every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
 (define (singleton-search matrix)
-  (rec-matrix-search matrix '() 0))
-
-(define (rec-matrix-search input-matrix result-matrix row)
-  (if (empty? input-matrix) 
-      result-matrix
-      (rec-matrix-search (rest input-matrix) (singleton-search-row input-matrix (first input-matrix) row) (+ 1 row))))
+  (singleton-search-row 
+   (singleton-search-row 
+    (singleton-search-row 
+     (singleton-search-row 
+      (singleton-search-row 
+       (singleton-search-row 
+        (singleton-search-row 
+         (singleton-search-row 
+          (singleton-search-row matrix (ninth matrix) 8) 
+          (eighth matrix) 7) 
+         (seventh matrix) 6) 
+        (sixth matrix) 5) 
+       (fifth matrix) 4) 
+      (fourth matrix) 3) 
+     (third matrix) 2) 
+    (second matrix) 1) 
+   (first matrix) 0))
 
 
 
@@ -373,7 +384,8 @@
          amend-grid
          remove-singleton
          singleton-search-row
-         rec-search-row)
+         rec-search-row
+         singleton-search)
 
     
        
