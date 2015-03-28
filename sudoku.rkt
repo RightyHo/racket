@@ -280,6 +280,19 @@
           [(singleton (first my-list)) (rec-search-row (remove-singleton matrix row col (singleton-value (first my-list))) (rest my-list) row (+ 1 col))]
           [else (rec-search-row matrix (rest my-list) row (+ 1 col))]))
 
+;; find a cell containing a singleton set (a set containing just one number) in a given matrix.
+;; for every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
+(define (singleton-search matrix)
+  (rec-matrix-search matrix '() 0))
+
+(define (rec-matrix-search input-matrix result-matrix row)
+  (if (empty? input-matrix) 
+      result-matrix
+      (rec-matrix-search (rest input-matrix) (singleton-search-row input-matrix (first input-matrix) row) (+ 1 row))))
+
+
+
+
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
   '((0 2 5 0 0 1 0 0 0)
