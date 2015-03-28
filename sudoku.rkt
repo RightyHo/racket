@@ -247,16 +247,26 @@
 
 ;; amends a grid in the matrix by removing a specified singleton from every set in a specified grid
 (define (amend-grid matrix grid singleton)
- (let ([top-rows (take matrix (top-grid-row grid))]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
-       [remainder (drop matrix (+ 2 (top-grid-row grid)))])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
-   (append top-rows 
-         (append 
-          (list (rec-reduce-choices (extract matrix (top-grid-row grid) (left-grid-col grid) 3) '() singleton))      
-          (append 
-          (list (rec-reduce-choices (extract matrix (+ 1 (top-grid-row grid)) (left-grid-col grid) 3) '() singleton))  
-          (append 
-          (list (rec-reduce-choices (extract matrix (+ 2 (top-grid-row grid)) (left-grid-col grid) 3) '() singleton))  
-          (drop matrix (+ 2 (top-grid-row grid)))))))))
+  (let ([top-rows (take matrix (top-grid-row grid))]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
+        [remainder (drop matrix (+ 3 (top-grid-row grid)))])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+    (append top-rows 
+            (append
+             (cons 
+              (append (take (get-row matrix (top-grid-row grid)) (left-grid-col grid))
+                      (append (rec-reduce-choices (extract matrix (top-grid-row grid) (left-grid-col grid) 3) '() singleton)
+                              (drop (get-row matrix (top-grid-row grid)) (+ 3 (left-grid-col grid)))))      
+              (cons 
+               (append (take (get-row matrix (+ 1 (top-grid-row grid))) (left-grid-col grid))
+                       (append (rec-reduce-choices (extract matrix (+ 1 (top-grid-row grid)) (left-grid-col grid) 3) '() singleton)
+                               (drop (get-row matrix (+ 1 (top-grid-row grid))) (+ 3 (left-grid-col grid)))))
+               (list 
+                (append (take (get-row matrix (+ 2 (top-grid-row grid))) (left-grid-col grid))
+                        (append (rec-reduce-choices (extract matrix (+ 2 (top-grid-row grid)) (left-grid-col grid) 3) '() singleton)
+                                (drop (get-row matrix (+ 2 (top-grid-row grid))) (+ 3 (left-grid-col grid))))))))
+             remainder))))
+
+
+
 
 ;; Find a location containing a singleton set (a set containing just one number).
 ;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
