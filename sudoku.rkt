@@ -346,7 +346,10 @@
          reduce-column-choices
          reduce-grid-choices
          amend-row
-         amend-column)
+         amend-column
+         top-grid-row
+         left-grid-col
+         amend-grid)
 
     
        

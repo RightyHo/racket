@@ -273,7 +273,30 @@
                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
    
-
+    ;; top-grid-row test
+   (check = (top-grid-row 2) 0) 
+   (check = (top-grid-row 6) 3) 
+   (check = (top-grid-row 7) 6) 
+   
+    ;; left-grid-col
+    (check = (left-grid-col 2) 3) 
+    (check = (left-grid-col 9) 6)
+    (check = (left-grid-col 4) 0)
+    
+    ;; amend-grid
+    (test-case
+     "test the amend-grid function and confirm that the output meets expectation"
+     (let ([output (amend-grid poss-matrix 5 3)])
+       (check-equal? output (list
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 3) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 2) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 8) (seteq 7) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
    
    
    
