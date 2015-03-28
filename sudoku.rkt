@@ -301,8 +301,12 @@
     (second matrix) 1) 
    (first matrix) 0))
 
-
-
+;; runs the singleton-search on a loop until the unput matrix is equal to the output matrix
+(define (search-again matrix)
+  (let loop ([reduced-matrix matrix])
+    (cond [(empty? reduced-matrix) #f]
+          [(equal? (singleton-search reduced-matrix) reduced-matrix) reduced-matrix]
+          [else (loop (singleton-search reduced-matrix))])))
 
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
