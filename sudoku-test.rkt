@@ -278,12 +278,12 @@
    (check = (top-grid-row 6) 3) 
    (check = (top-grid-row 7) 6) 
    
-    ;; left-grid-col
+    ;; left-grid-col test
     (check = (left-grid-col 2) 3) 
     (check = (left-grid-col 9) 6)
     (check = (left-grid-col 4) 0)
     
-    ;; amend-grid
+    ;; amend-grid test
     (test-case
      "test the amend-grid function and confirm that the output meets expectation"
      (let ([output (amend-grid poss-matrix 5 3)])
@@ -297,6 +297,23 @@
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
+    
+    ;; remove-singleton test
+    (test-case
+     "test the remove-singleton function and confirm that the output meets expectation"
+     (let ([output (remove-singleton poss-matrix 5 3 8)])
+       (check-equal? output (list
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 9) (seteq 3) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 9) (seteq 2) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 9))
+                             (list (seteq 1 2 3 4 5 6 7 9) (seteq 8) (seteq 7) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 9) (seteq 1 2 3 4 5 6 7 9) (seteq 6) (seteq 1 2 3 4 5 6 7 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9) (seteq 3))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
+    
+    ;; singleton-search-row test
    
    
    

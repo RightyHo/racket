@@ -267,10 +267,8 @@
 
 ;; remove singleton from all cells in the same row, column and grid as the given cell
 (define (remove-singleton matrix row col singleton)
-    (amend-row matrix row singleton)
-    (amend-column matrix col singleton)
-    (amend-grid matrix (which-grid row col) singleton))
-
+    (amend-row (amend-column (amend-grid matrix (which-grid row col) singleton) col singleton) row singleton))
+    
 ;; Find a cell containing a singleton set (a set containing just one number) in a given row.
 ;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
 (define (singleton-search-row matrix list row)
