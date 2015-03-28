@@ -269,14 +269,16 @@
 (define (remove-singleton matrix row col singleton)
     (amend-row (amend-column (amend-grid matrix (which-grid row col) singleton) col singleton) row singleton))
     
-;; Find a cell containing a singleton set (a set containing just one number) in a given row.
-;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
-(define (singleton-search-row matrix list row)
-  (let loop ([my-list list]
-             [index 0])
-    (cond [(empty? my-list) #f]
-          [(singleton (first my-list)) (remove-singleton matrix row index (singleton-value (first my-list)))]
-          [else (loop (rest my-list) (add1 index))])))
+;; find a cell containing a singleton set (a set containing just one number) in a given row.
+;; for every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
+(define (singleton-search-row matrix my-list row)
+    (rec-search-row matrix my-list row 0))
+
+;; recursive helper class for singleton-search-row function
+(define (rec-search-row matrix my-list row col)
+    (cond [(empty? my-list) matrix]
+          [(singleton (first my-list)) (rec-search-row (remove-singleton matrix row col (singleton-value (first my-list))) (rest my-list) row (+ 1 col))]
+          [else (rec-search-row matrix (rest my-list) row (+ 1 col))]))
 
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
@@ -357,7 +359,8 @@
          left-grid-col
          amend-grid
          remove-singleton
-         singleton-search-row)
+         singleton-search-row
+         rec-search-row)
 
     
        

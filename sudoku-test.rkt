@@ -314,8 +314,34 @@
                              (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
     
     ;; singleton-search-row test
-   
-   
+    (test-case
+     "test the singleton-search-row function and confirm that the output meets expectation"
+     (let ([output (singleton-search-row poss-matrix (fourth poss-matrix) 3)])
+       (check-equal? output (list
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1) (seteq 1 2 4 5 6 7 8 9) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1) (seteq 1 2 3 4 6 7 8 9) (seteq 4) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 4 6 7 8 9) (seteq 5) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 3) (seteq 2) (seteq 1 4 6 7 8 9))
+                             (list (seteq 6) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 9))
+                             (list (seteq 1 2 3 4 6 7 8 9) (seteq 8) (seteq 7) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 6) (seteq 1 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 3 4 5 6 7 8 9) (seteq 3))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
+    
+    ;; rec-search-row test
+   (test-case
+     "test the rec-search-row function and confirm that the output meets expectation"
+     (let ([output (rec-search-row poss-matrix (fourth poss-matrix) 3 0)])
+       (check-equal? output (list
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1) (seteq 1 2 4 5 6 7 8 9) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1) (seteq 1 2 3 4 6 7 8 9) (seteq 4) (seteq 2) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 4 5 6 7 8 9) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 4 6 7 8 9) (seteq 5) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 1 4 6 7 8 9) (seteq 3) (seteq 2) (seteq 1 4 6 7 8 9))
+                             (list (seteq 6) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 2) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 9))
+                             (list (seteq 1 2 3 4 6 7 8 9) (seteq 8) (seteq 7) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 4 5 6 7 8 9) (seteq 6) (seteq 1 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 9) (seteq 1) (seteq 5) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 7) (seteq 8) (seteq 1) (seteq 1 3 4 5 6 7 8 9) (seteq 3))
+                             (list (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 6) (seteq 1 2 3 4 5 6 7 8 9) (seteq 1 2 3 4 5 6 7 8 9) (seteq 5) (seteq 9) (seteq 1 2 3 4 5 6 7 8 9))))))
    
    
    
