@@ -266,11 +266,10 @@
              remainder))))
 
 ;; remove singleton from all cells in the same row, column and grid as the given cell
-(define (remove-singleton matrix cell row col)
-  (let ([singleton (singleton-value cell)])
+(define (remove-singleton matrix row col singleton)
     (amend-row matrix row singleton)
     (amend-column matrix col singleton)
-    (amend-grid matrix (which-grid row col) singleton)))
+    (amend-grid matrix (which-grid row col) singleton))
 
 ;; Find a cell containing a singleton set (a set containing just one number) in a given row.
 ;; For every other set in the same row, the same column, or the same 3x3 box, remove that number (if present).
@@ -278,7 +277,7 @@
   (let loop ([my-list list]
              [index 0])
     (cond [(empty? my-list) #f]
-          [(singleton (first my-list)) (remove-singleton matrix (first my-list) row index)]
+          [(singleton (first my-list)) (remove-singleton matrix row index (singleton-value (first my-list)))]
           [else (loop (rest my-list) (add1 index))])))
 
 ;; Example input list describing an initialised Sudoku board
@@ -358,7 +357,9 @@
          amend-column
          top-grid-row
          left-grid-col
-         amend-grid)
+         amend-grid
+         remove-singleton
+         singleton-search-row)
 
     
        
