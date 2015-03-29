@@ -1,29 +1,5 @@
 #lang racket
 
-;; where row and column parameters indicate the first cell to transform and
-;; sublist-size indicates the number of adjacent cells you want to transform
-;; the matrix rows and columns are numbered 0 to 8
-; (define (amend-set matrix row column sublist-size singleton)
-;  (let ([inner (take matrix row)]  ; select the first "row" number of rows in the matrix (rows 0 to "row" - 1)
-;       [remainder (drop matrix row)])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
-;   (append inner 
-;         (append 
-;          (list
-;          (flatten
-;           (list
-;            (take (first (take remainder 1)) column)  ; select the columns before the sublist (to remain unchanged) on the row to be manipulated
-;            (remove-singleton-val matrix row column sublist-size '(seteq 1 2 3 4 5 6 7 8 9) singleton) ; manipulate the values of the selected sublist
-;            (drop (first (take remainder 1)) (+ column sublist-size))))) ; select the remaining columns on the manipulated row after the sublist (to remain unchanged)         
-;          (drop matrix (+ row 1))))))
-
-;; calls the replace method with the search key and replace values listed on the
-;; sub-list beginning at cell (row,column) and ending "sublist-size" cells to the right
-; (define (remove-singleton-val matrix row column sublist-size init-val single)
-;   (replace (extract matrix row column sublist-size) init-val (set-remove init-val single)))
-
-;; The structure of each cell we will work with when trying to solve the puzzle
-(struct square (grid row col value) #:transparent)  
-
 ;; Sets grid ID for the 9 3X3 grids on the matrix
 (define (which-grid r c)
   (cond ((and (and (>= r 0) (< r 3)) 
@@ -308,6 +284,24 @@
           [(equal? (singleton-search reduced-matrix) reduced-matrix) reduced-matrix]
           [else (loop (singleton-search reduced-matrix))])))
 
+;; Find a number in a set that does not occur in any other set in
+;; the same row (or column, or box).
+;; ▪ Reduce that set to a singleton containing that one number.
+(define (is-unique cell matrix row-num col-num)
+  (let loop* ([value (set-first cell)]
+        [row-list (get-row matrix row-num)]
+        [filtered-row (filter (lambda (x) (if (set-member? x value)
+                         #t
+                         #f)) row-list)]
+        [col-list (get-column col-num)]
+        [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
+    (cond [(singleton cell) (matrix)]
+          [(= 1 (length filtered-row)) (reduce-matrix-cell matrix row-num col-num value)]
+          [else (loop (set-rest cell))])))       
+
+;; change a cell in the matrix to a singleton value and return a new matrix
+;(define (reduce-matrix-cell matrix row-num col-num value)
+
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
   '((0 2 5 0 0 1 0 0 0)
@@ -367,8 +361,6 @@
          transform
          replace
          extract
-         ;; amend-set
-         ;; remove-singleton-val
          get-row
          get-column
          grid-cell-list
