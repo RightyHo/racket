@@ -389,7 +389,8 @@
          remove-singleton
          singleton-search-row
          rec-search-row
-         singleton-search)
+         singleton-search
+         search-again)
 
     
        

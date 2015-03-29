@@ -351,14 +351,31 @@
                             (list (seteq 3 7 8 9) (seteq 2) (seteq 5) (seteq 3 7 8 9) (seteq 3 6 8 9) (seteq 1) (seteq 4 7 8 9) (seteq 3 4 7 8) (seteq 4 6 7 8))
                             (list (seteq 1) (seteq 3 7) (seteq 4) (seteq 2) (seteq 5) (seteq 3 6 7 9) (seteq 7 8 9) (seteq 3 7 8) (seteq 6 7 8))
                             (list (seteq 3 7 8 9) (seteq 3 7) (seteq 6) (seteq 3 7 8 9) (seteq 3 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 5 7 8))                         
+                            
                             (list (seteq 4 9) (seteq 5) (seteq 9) (seteq 1 4 7 8 9) (seteq 1 4 6 8 9) (seteq 6 7 9) (seteq 3) (seteq 2) (seteq 1 4 7 8))
                             (list (seteq 6) (seteq 1 3 4) (seteq 3) (seteq 1 3 4 7 8) (seteq 2) (seteq 3 5 7) (seteq 4 7 8) (seteq 4 5 7 8) (seteq 9))
                             (list (seteq 2 3 4 9) (seteq 8) (seteq 7) (seteq 1 3 4 9) (seteq 1 3 4 9) (seteq 3 5 9) (seteq 4) (seteq 6) (seteq 1 4 5))                           
+                            
                             (list (seteq 2 3 4 7 8) (seteq 9) (seteq 1) (seteq 5) (seteq 3 4) (seteq 2 3) (seteq 6) (seteq 4 7 8) (seteq 2 4 7 8))
                             (list (seteq 2 4 5) (seteq 4 6) (seteq 2) (seteq 4 9) (seteq 7) (seteq 8) (seteq 1) (seteq 4) (seteq 3))
                             (list (seteq 2 3 4 7 8) (seteq 3 4 7) (seteq 2 3 8) (seteq 6) (seteq 1 3 4) (seteq 2 3) (seteq 5) (seteq 9) (seteq 2 4 7 8))))))
    
-   
+   ;; search-again test
+   (test-case
+    "test the search-again function and confirm that the output meets expectation"
+    (let ([output (search-again poss-matrix)])
+      (check-equal? output (list
+                            (list (seteq 3 7 8 9) (seteq 2) (seteq 5) (seteq 3 7 8) (seteq 3 6 8 9) (seteq 1) (seteq 7 8 9) (seteq 3 7 8) (seteq 4 6 7 8))
+                            (list (seteq 1) (seteq 3 7) (seteq 4) (seteq 2) (seteq 5) (seteq 3 6 7 9) (seteq 7 8 9) (seteq 3 7 8) (seteq 6 7 8))
+                            (list (seteq 3 7 8 9) (seteq 3 7) (seteq 6) (seteq 3 7 8) (seteq 3 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 5 7 8))                         
+                            
+                            (list (seteq 4) (seteq 5) (seteq 9) (seteq 1 7 8) (seteq 1 6 8) (seteq 6 7) (seteq 3) (seteq 2) (seteq 1 7 8))
+                            (list (seteq 6) (seteq 1) (seteq 3) (seteq 4 7 8) (seteq 2) (seteq 5 7) (seteq 7 8) (seteq 5 7 8) (seteq 9))
+                            (list (seteq 2) (seteq 8) (seteq 7) (seteq 1 3) (seteq 1 3 9) (seteq 3 5 9) (seteq 4) (seteq 6) (seteq 1 5))                           
+                            
+                            (list (seteq 3 7) (seteq 9) (seteq 1) (seteq 5) (seteq 3 4) (seteq 2 3) (seteq 6) (seteq 7 8) (seteq 2 7 8))
+                            (list (seteq 5) (seteq 6) (seteq 2) (seteq 9) (seteq 7) (seteq 8) (seteq 1) (seteq 4) (seteq 3))
+                            (list (seteq 3 7) (seteq 3 4 7) (seteq 8) (seteq 6) (seteq 1 3 4) (seteq 2 3) (seteq 5) (seteq 9) (seteq 2 7))))))
    
    
    
