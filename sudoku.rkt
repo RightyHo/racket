@@ -1,5 +1,43 @@
 #lang racket
 
+;; Example input list describing an initialised Sudoku board
+(define unsolved
+  '((0 2 5 0 0 1 0 0 0)
+    (1 0 4 2 5 0 0 0 0)
+    (0 0 6 0 0 4 2 1 0)
+    (0 5 0 0 0 0 3 2 0)
+    (6 0 0 0 2 0 0 0 9)
+    (0 8 7 0 0 0 0 6 0)
+    (0 9 1 5 0 0 6 0 0)
+    (0 0 0 0 7 8 1 0 3)
+    (0 0 0 6 0 0 5 9 0)))
+
+;; Set of all possible values
+(define possible (seteq 1 2 3 4 5 6 7 8 9))
+    
+;; pre-defined rows, columns, matrices and grids for use in testing
+    
+(define poss-matrix (transform unsolved))
+
+(define first-row (first poss-matrix))
+(define third-row (third poss-matrix))
+(define test-row (sixth poss-matrix))
+(define last-row (ninth poss-matrix))
+(define reduced-row-3 (reduce-row-choices poss-matrix 8 3))
+(define reduced-row-6 (reduce-row-choices poss-matrix 8 6))
+
+(define sixth-column (get-column poss-matrix 5))
+(define ninth-column (get-column poss-matrix 8))
+(define third-column (get-column poss-matrix 2))
+(define reduced-col-3 (reduce-column-choices poss-matrix 2 3))
+(define reduced-col-7 (reduce-column-choices poss-matrix 2 7))
+
+(define first-grid (grid-cell-list poss-matrix 1))
+(define ninth-grid (grid-cell-list poss-matrix 9))
+(define fourth-grid (grid-cell-list poss-matrix 4))
+(define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
+(define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
+
 ;; Sets grid ID for the 9 3X3 grids on the matrix
 (define (which-grid r c)
   (cond ((and (and (>= r 0) (< r 3)) 
@@ -277,7 +315,7 @@
     (second matrix) 1) 
    (first matrix) 0))
 
-;; runs the singleton-search on a loop until the unput matrix is equal to the output matrix
+;; runs the singleton-search on a loop until the input matrix is equal to the output matrix
 (define (search-again matrix)
   (let loop ([reduced-matrix matrix])
     (cond [(empty? reduced-matrix) #f]
@@ -289,56 +327,26 @@
 ;; ▪ Reduce that set to a singleton containing that one number.
 (define (is-unique cell matrix row-num col-num)
   (let loop* ([value (set-first cell)]
-        [row-list (get-row matrix row-num)]
-        [filtered-row (filter (lambda (x) (if (set-member? x value)
-                         #t
-                         #f)) row-list)]
-        [col-list (get-column col-num)]
-        [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
+              [row-list (get-row matrix row-num)]
+              [filtered-row (filter (lambda (x) (if (set-member? x value)
+                                                    #t
+                                                    #f)) row-list)]
+              [col-list (get-column col-num)]
+              [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
     (cond [(singleton cell) (matrix)]
           [(= 1 (length filtered-row)) (reduce-matrix-cell matrix row-num col-num value)]
-          [else (loop (set-rest cell))])))       
+          [else (loop* (set-rest cell))])))       
 
 ;; change a cell in the matrix to a singleton value and return a new matrix
-;(define (reduce-matrix-cell matrix row-num col-num value)
-
-;; Example input list describing an initialised Sudoku board
-(define unsolved
-  '((0 2 5 0 0 1 0 0 0)
-    (1 0 4 2 5 0 0 0 0)
-    (0 0 6 0 0 4 2 1 0)
-    (0 5 0 0 0 0 3 2 0)
-    (6 0 0 0 2 0 0 0 9)
-    (0 8 7 0 0 0 0 6 0)
-    (0 9 1 5 0 0 6 0 0)
-    (0 0 0 0 7 8 1 0 3)
-    (0 0 0 6 0 0 5 9 0)))
-
-;; Set of all possible values
-(define possible (seteq 1 2 3 4 5 6 7 8 9))
-    
-;; pre-defined rows, columns, matrices and grids for use in testing
-    
-(define poss-matrix (transform unsolved))
-
-(define first-row (first poss-matrix))
-(define third-row (third poss-matrix))
-(define test-row (sixth poss-matrix))
-(define last-row (ninth poss-matrix))
-(define reduced-row-3 (reduce-row-choices poss-matrix 8 3))
-(define reduced-row-6 (reduce-row-choices poss-matrix 8 6))
-
-(define sixth-column (get-column poss-matrix 5))
-(define ninth-column (get-column poss-matrix 8))
-(define third-column (get-column poss-matrix 2))
-(define reduced-col-3 (reduce-column-choices poss-matrix 2 3))
-(define reduced-col-7 (reduce-column-choices poss-matrix 2 7))
-
-(define first-grid (grid-cell-list poss-matrix 1))
-(define ninth-grid (grid-cell-list poss-matrix 9))
-(define fourth-grid (grid-cell-list poss-matrix 4))
-(define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
-(define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
+(define (reduce-matrix-cell matrix row-num col-num value)
+  (let ([top-rows (take matrix row-num)]  ; select the first "row-num" number of rows in the matrix (rows 0 to "row-num" - 1)
+        [remainder (drop matrix (+ 1 row-num))])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+    (append top-rows 
+            (append
+             (append (take (get-row matrix row-num) col-num)
+                     (append ('(value))
+                             (drop (get-row matrix row-num) (+ 1 col-num))))                    
+             remainder))))
                   
 
 (provide unsolved
@@ -353,8 +361,7 @@
          third-column
          first-grid
          ninth-grid
-         fourth-grid
-         square
+         fourth-grid    
          which-grid
          make-set
          list-possible
