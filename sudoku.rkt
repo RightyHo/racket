@@ -288,16 +288,24 @@
 ;; the same row (or column, or box).
 ;; ▪ Reduce that set to a singleton containing that one number.
 ;(define (is-unique cell matrix row-num col-num)
-;  (let loop* ([value (set-first cell)]
-;              [row-list (get-row matrix row-num)]
-;              [filtered-row (filter (lambda (x) (if (set-member? x value)
-;                                                    #t
-;                                                    #f)) row-list)]
+;  (let loop* ([value (set-first cell)]             
 ;              [col-list (get-column col-num)]
 ;              [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
 ;    (cond [(singleton cell) (matrix)]
-;          [(= 1 (length filtered-row)) (reduce-matrix-cell matrix row-num col-num value)]
+;          [(unique-in-row value matrix row-num) (reduce-matrix-cell matrix row-num col-num value)]
 ;          [else (loop* (set-rest cell))])))       
+
+;; checks if a value occurs only once in a row
+(define (unique-in-row value matrix row-num)
+  (let* ([row-list (get-row matrix row-num)]
+        [filtered-row (filter (lambda (x) (if (set-member? x value)
+                                                    #t
+                                                    #f)) row-list)])
+    (if (= 1 (length filtered-row))
+        #t
+        #f)))
+  
+         
 
 ;; change a cell in the matrix to a singleton value and return a new matrix
 (define (reduce-matrix-cell matrix row-num col-num value)
