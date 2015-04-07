@@ -409,7 +409,8 @@
          rec-search-row
          singleton-search
          search-again
-         reduce-matrix-cell)
+         reduce-matrix-cell
+         unique-in-row)
 
     
        
