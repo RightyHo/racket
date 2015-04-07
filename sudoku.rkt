@@ -287,13 +287,15 @@
 ;; Find a number in a set that does not occur in any other set in
 ;; the same row (or column, or box).
 ;; ▪ Reduce that set to a singleton containing that one number.
-;(define (is-unique cell matrix row-num col-num)
-;  (let loop* ([value (set-first cell)]             
+(define (is-unique cell matrix row-num col-num)
+  (let loop ([value (set-first cell)])             
+    (cond [(singleton cell) matrix]
+          [(unique-in-row value matrix row-num) (reduce-matrix-cell matrix row-num col-num value)]
+          [else (loop (set-rest cell))])))       
+
+
 ;              [col-list (get-column col-num)]
 ;              [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
-;    (cond [(singleton cell) (matrix)]
-;          [(unique-in-row value matrix row-num) (reduce-matrix-cell matrix row-num col-num value)]
-;          [else (loop* (set-rest cell))])))       
 
 ;; checks if a value occurs only once in a row
 (define (unique-in-row value matrix row-num)
@@ -368,6 +370,11 @@
 (define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
 (define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
 
+(define remaining-first-row (first (search-again poss-matrix)))
+(define remaining-third-row (third (search-again poss-matrix)))
+(define remaining-sixth-row (sixth (search-again poss-matrix)))
+(define remaining-last-row (last (search-again poss-matrix)))
+
 (provide unsolved
          possible
          poss-matrix
@@ -380,7 +387,11 @@
          third-column
          first-grid
          ninth-grid
-         fourth-grid    
+         fourth-grid 
+         remaining-first-row
+         remaining-third-row
+         remaining-sixth-row
+         remaining-last-row
          which-grid
          make-set
          list-possible
