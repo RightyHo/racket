@@ -294,8 +294,8 @@
           [else (loop (set-rest cell))])))       
 
 
-;              [col-list (get-column col-num)]
-;              [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
+;   need to add           [col-list (get-column col-num)]
+;   need to add           [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
 
 ;; checks if a value occurs only once in a row
 (define (unique-in-row value matrix row-num)
@@ -321,7 +321,11 @@
                              (drop (get-row matrix row-num) (+ 1 col-num)))))                    
              remainder))))
 
-
+;; loops through a row checking whether each cell contains a unique value by running the is-unique function and reducing the matrix accordingly if one is found.
+(define (search-unique-row row-list row-num col-num matrix)
+  (if (empty? row-list)
+      matrix
+      (search-unique-row (drop row-list 1) row-num (+ 1 col-num) (is-unique (take row-list 1) matrix row-num col-num)))) ;; not working correctly at the moment
 
 
 ;; the main user interaction funcgtion - accepts a Sudoku puzzle given as a list of lists, with each sub-list representing one row of the puzzle.  Returns solved puzzle.
