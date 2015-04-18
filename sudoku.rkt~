@@ -277,7 +277,7 @@
     (second matrix) 1) 
    (first matrix) 0))
 
-;; runs the singleton-search on a loop until the unput matrix is equal to the output matrix
+;; runs the singleton-search on a loop until the input matrix is equal to the output matrix
 (define (search-again matrix)
   (let loop ([reduced-matrix matrix])
     (cond [(empty? reduced-matrix) #f]
@@ -288,19 +288,49 @@
 ;; the same row (or column, or box).
 ;; ▪ Reduce that set to a singleton containing that one number.
 (define (is-unique cell matrix row-num col-num)
-  (let loop* ([value (set-first cell)]
-        [row-list (get-row matrix row-num)]
-        [filtered-row (filter (lambda (x) (if (set-member? x value)
-                         #t
-                         #f)) row-list)]
-        [col-list (get-column col-num)]
-        [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
-    (cond [(singleton cell) (matrix)]
-          [(= 1 (length filtered-row)) (reduce-matrix-cell matrix row-num col-num value)]
+  (let loop ([value (set-first cell)])             
+    (cond [(singleton cell) matrix]
+          [(unique-in-row value matrix row-num) (reduce-matrix-cell matrix row-num col-num value)]
           [else (loop (set-rest cell))])))       
 
+
+;              [col-list (get-column col-num)]
+;              [grid-list (grid-cell-list matrix (which-grid row-num col-num))])
+
+;; checks if a value occurs only once in a row
+(define (unique-in-row value matrix row-num)
+  (let* ([row-list (get-row matrix row-num)]
+        [filtered-row (filter (lambda (x) (if (set-member? x value)
+                                                    #t
+                                                    #f)) row-list)])
+    (if (= 1 (length filtered-row))
+        #t
+        #f)))
+  
+         
+
 ;; change a cell in the matrix to a singleton value and return a new matrix
-;(define (reduce-matrix-cell matrix row-num col-num value)
+(define (reduce-matrix-cell matrix row-num col-num value)
+  (let ([top-rows (take matrix row-num)]  ; select the first "row-num" number of rows in the matrix (rows 0 to "row-num" - 1)
+        [remainder (drop matrix (+ 1 row-num))])  ; remove selected number of rows from the matrix to produce a new matrix beginning at row number "row"
+    (append top-rows 
+            (append
+             (list
+             (append (take (get-row matrix row-num) col-num)
+                     (append (cons (seteq value) '())
+                             (drop (get-row matrix row-num) (+ 1 col-num)))))                    
+             remainder))))
+
+
+
+
+
+
+
+
+
+
+
 
 ;; Example input list describing an initialised Sudoku board
 (define unsolved
@@ -339,7 +369,11 @@
 (define fourth-grid (grid-cell-list poss-matrix 4))
 (define reduced-grid-3 (reduce-grid-choices poss-matrix 4 3))
 (define reduced-grid-7 (reduce-grid-choices poss-matrix 4 7))
-                  
+
+(define remaining-first-row (first (search-again poss-matrix)))
+(define remaining-third-row (third (search-again poss-matrix)))
+(define remaining-sixth-row (sixth (search-again poss-matrix)))
+(define remaining-last-row (last (search-again poss-matrix)))
 
 (provide unsolved
          possible
@@ -353,8 +387,11 @@
          third-column
          first-grid
          ninth-grid
-         fourth-grid
-         square
+         fourth-grid 
+         remaining-first-row
+         remaining-third-row
+         remaining-sixth-row
+         remaining-last-row
          which-grid
          make-set
          list-possible
@@ -382,7 +419,9 @@
          singleton-search-row
          rec-search-row
          singleton-search
-         search-again)
+         search-again
+         reduce-matrix-cell
+         unique-in-row)
 
     
        

@@ -324,8 +324,9 @@
 
 
 
-
-
+;; the main user interaction funcgtion - accepts a Sudoku puzzle given as a list of lists, with each sub-list representing one row of the puzzle.  Returns solved puzzle.
+(define (solve matrix)
+  (search-again (transform matrix)))
 
 
 
