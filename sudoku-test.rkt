@@ -399,7 +399,21 @@
           [output-2 (unique-in-row 4 (reduce-matrix-cell poss-matrix 6 8 90909) 6)])
       (check-equal? output-1 #t)
       (check-equal? output-2 #f)))
-                    
+                
+      ;; is-unique test
+   (test-case
+    "test the is-unique function and confirm that the output meets expectation"
+    (let ([output (is-unique (last (first part-solution)) part-solution 0 8)])
+      (check-equal? output (list
+                            (list (seteq 3 7 8 9) (seteq 2) (seteq 5) (seteq 3 7 8) (seteq 3 6 8 9) (seteq 1) (seteq 7 8 9) (seteq 3 7 8) (seteq 4))
+                            (list (seteq 1) (seteq 3 7) (seteq 4) (seteq 2) (seteq 5) (seteq 3 6 7 9) (seteq 7 8 9) (seteq 3 7 8) (seteq 6 7 8))
+                            (list (seteq 3 7 8 9) (seteq 3 7) (seteq 6) (seteq 3 7 8) (seteq 3 8 9) (seteq 4) (seteq 2) (seteq 1) (seteq 5 7 8))
+                            (list (seteq 4) (seteq 5) (seteq 9) (seteq 1 7 8) (seteq 1 6 8) (seteq 6 7) (seteq 3) (seteq 2) (seteq 1 7 8))
+                            (list (seteq 6) (seteq 1) (seteq 3) (seteq 4 7 8) (seteq 2) (seteq 5 7) (seteq 7 8) (seteq 5 7 8) (seteq 9))
+                            (list (seteq 2) (seteq 8) (seteq 7) (seteq 1 3) (seteq 1 3 9) (seteq 3 5 9) (seteq 4) (seteq 6) (seteq 1 5))
+                            (list (seteq 3 7) (seteq 9) (seteq 1) (seteq 5) (seteq 3 4) (seteq 2 3) (seteq 6) (seteq 7 8) (seteq 2 7 8))
+                            (list (seteq 5) (seteq 6) (seteq 2) (seteq 9) (seteq 7) (seteq 8) (seteq 1) (seteq 4) (seteq 3))
+                            (list (seteq 3 7) (seteq 3 4 7) (seteq 8) (seteq 6) (seteq 1 3 4) (seteq 2 3) (seteq 5) (seteq 9) (seteq 2 7))))))
                     
                     
                     

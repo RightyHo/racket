@@ -351,6 +351,7 @@
 ;; pre-defined rows, columns, matrices and grids for use in testing
     
 (define poss-matrix (transform unsolved))
+(define part-solution(solve unsolved))
 
 (define first-row (first poss-matrix))
 (define third-row (third poss-matrix))
@@ -379,6 +380,7 @@
 (provide unsolved
          possible
          poss-matrix
+         part-solution
          first-row
          third-row
          test-row 
@@ -422,7 +424,9 @@
          singleton-search
          search-again
          reduce-matrix-cell
-         unique-in-row)
+         unique-in-row
+         is-unique
+         )
 
     
        
