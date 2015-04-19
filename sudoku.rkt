@@ -289,7 +289,8 @@
 ;; ▪ Reduce that set to a singleton containing that one number.
 (define (is-unique cell matrix row-num col-num)
   (let loop ([value (set-first cell)])             
-    (cond [(singleton cell) matrix]
+    (cond [(set-empty? cell) matrix]
+          [(singleton cell) matrix]
           [(unique-in-row value matrix row-num) (reduce-matrix-cell matrix row-num col-num value)]
           [else (loop (set-rest cell))])))       
 
@@ -307,8 +308,6 @@
         #t
         #f)))
   
-         
-
 ;; change a cell in the matrix to a singleton value and return a new matrix
 (define (reduce-matrix-cell matrix row-num col-num value)
   (let ([top-rows (take matrix row-num)]  ; select the first "row-num" number of rows in the matrix (rows 0 to "row-num" - 1)
@@ -325,13 +324,16 @@
 (define (search-unique-row row-list row-num col-num matrix)
   (if (empty? row-list)
       matrix
-      (search-unique-row (drop row-list 1) row-num (+ 1 col-num) (is-unique (take row-list 1) matrix row-num col-num)))) ;; not working correctly at the moment
+      ;(search-unique-row (drop row-list 1) row-num (+ 1 col-num) (is-unique (car row-list) matrix row-num col-num)))) ;; not working correctly at the moment
+      (is-unique (car row-list) matrix row-num col-num)))
+
+
+
 
 
 ;; the main user interaction funcgtion - accepts a Sudoku puzzle given as a list of lists, with each sub-list representing one row of the puzzle.  Returns solved puzzle.
 (define (solve matrix)
   (search-again (transform matrix)))
-
 
 
 
