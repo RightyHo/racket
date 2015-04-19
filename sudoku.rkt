@@ -324,8 +324,8 @@
 (define (search-unique-row row-list row-num col-num matrix)
   (if (empty? row-list)
       matrix
-      ;(search-unique-row (drop row-list 1) row-num (+ 1 col-num) (is-unique (car row-list) matrix row-num col-num)))) ;; not working correctly at the moment
-      (is-unique (car row-list) matrix row-num col-num)))
+      (search-unique-row (drop row-list 1) row-num (+ 1 col-num) (is-unique (car row-list) matrix row-num col-num)))) ;; bug...but think problem is in the is-unique function
+      
 
 
 
@@ -333,7 +333,17 @@
 
 ;; the main user interaction funcgtion - accepts a Sudoku puzzle given as a list of lists, with each sub-list representing one row of the puzzle.  Returns solved puzzle.
 (define (solve matrix)
-  (search-again (transform matrix)))
+  (search-again (transform matrix))
+;  (search-unique-row (first matrix) 0 0 matrix) 
+;  (search-again (transform matrix))
+;  (search-unique-row (second matrix) 1 0 matrix) 
+;  (search-again (transform matrix))
+;  (search-unique-row (third matrix) 2 0 matrix) 
+;  (search-again (transform matrix))
+;  (search-unique-row (fourth matrix) 3 0 matrix) 
+;  (search-again (transform matrix))
+;  etc...  
+  )
 
 
 
